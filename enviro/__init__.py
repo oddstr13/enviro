@@ -478,7 +478,7 @@ def hass_discovery():
     logging.error(f"! cannot find destination {destination}")
     return False
   except:
-      logging.error(f"Unknown error in setting HASS Discovery")
+    logging.error(f"Unknown error in setting HASS Discovery")
 
 def startup():
   import sys

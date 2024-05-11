@@ -67,8 +67,8 @@ try:
 
   # Add HASS Discovery command before taking new readings
   if enviro.config.destination == "mqtt":
-      if enviro.config.hass_discovery:
-        enviro.hass_discovery()
+    if enviro.config.hass_discovery:
+      enviro.hass_discovery()
 
   # TODO should the board auto take a reading when the timer has been set, or wait for the time?
   # take a reading from the onboard sensors

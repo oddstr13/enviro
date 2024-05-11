@@ -80,7 +80,7 @@ def hass_discovery(board_type):
     mqtt_discovery("Enviro PM10", "pm10", "µg/m³", "pm10", board_type) # PM10
   
 
-def mqtt_discovery(name, device_class, unit, value_name, model ):
+def mqtt_discovery(name, device_class, unit, value_name, model):
   server = config.mqtt_broker_address
   username = config.mqtt_broker_username
   password = config.mqtt_broker_password
