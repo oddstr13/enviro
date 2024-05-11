@@ -62,7 +62,7 @@ def hass_discovery(board_type):
     mqtt_discovery("Wind Speed", "wind_speed", "m/s", "wind_speed", board_type) # Wind Speed
     mqtt_discovery("Rain", "precipitation", "mm", "rain", board_type) # Rain
     mqtt_discovery("Rain Per Second", "precipitation_intensity", "mm/s", "rain_per_second", board_type) # Rain Per Second
-    #mqtt_discovery("Wind Direction", "", "°", "wind_direction", board_type) # Wind Direction //HASS doesn't have a device class for direction//
+    mqtt_discovery("Wind Direction", None, "°", "wind_direction", board_type, icon="mdi:compass-rose") # Wind Direction 
   elif (board_type == "grow"):
     mqtt_discovery("Luminance", "illuminance", "lx", "luminance", board_type) # Luminance
     mqtt_discovery("Moisture A", "humidity", "%", "moisture_a", board_type) # Moisture A
@@ -70,7 +70,7 @@ def hass_discovery(board_type):
     mqtt_discovery("Moisture C", "humidity", "%", "moisture_c", board_type) # Moisture C
   elif (board_type == "indoor"):
     mqtt_discovery("Luminance", "illuminance", "lx", "luminance", board_type) # Luminance
-    #mqtt_discovery("Gas Resistance", "", "Ω", "gas_resistance", board_type) # Gas Resistance //HASS doesn't support resistance as a device class//
+    mqtt_discovery("Gas Resistance", None, "Ω", "gas_resistance", board_type, icon="mdi:gas-cylinder") # Gas Resistance
     mqtt_discovery("AQI", "aqi", "&", "aqi", board_type) # AQI
     mqtt_discovery("Colour Temperature", "temperature", "K", "color_temperature", board_type) # Colo(u)r Temperature
   elif (board_type == "urban"):
@@ -80,7 +80,7 @@ def hass_discovery(board_type):
     mqtt_discovery("PM10", "pm10", "µg/m³", "pm10", board_type) # PM10
   
 
-def mqtt_discovery(name, device_class, unit, value_name, model):
+def mqtt_discovery(name, device_class, unit, value_name, model, icon=None):
   server = config.mqtt_broker_address
   username = config.mqtt_broker_username
   password = config.mqtt_broker_password
@@ -95,13 +95,16 @@ def mqtt_discovery(name, device_class, unit, value_name, model):
       "mf":"Pimoroni"
     },
     "unit_of_meas":unit,
-    "dev_cla":device_class,
     "val_tpl":"{{ value_json.readings." + value_name +" }}",
     "state_cla": "measurement",
     "stat_t":"enviro/" + nickname,
     "name":name,
     "uniq_id":"sensor." + nickname + "." + value_name,
   })
+  if icon is not None:
+    obj["icon"] = icon
+  if device_class is not None:
+    obj["dev_cla"] = device_class
   try:
     # attempt to publish reading
     mqtt_client = MQTTClient(nickname, server, user=username, password=password, keepalive=60)
