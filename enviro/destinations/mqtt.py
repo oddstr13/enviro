@@ -53,31 +53,31 @@ def upload_reading(reading):
   return UPLOAD_FAILED
 
 def hass_discovery(board_type):
-  mqtt_discovery("Enviro Temperature", "temperature", "°C", "temperature", board_type) # Temperature
-  mqtt_discovery("Enviro Pressure", "pressure", "hPa", "pressure", board_type) # Pressure
-  mqtt_discovery("Enviro Humidity", "humidity", "%", "humidity", board_type) # Humidity
-  mqtt_discovery("Enviro Voltage", "voltage", "V", "voltage", board_type) # Voltage
+  mqtt_discovery("Temperature", "temperature", "°C", "temperature", board_type) # Temperature
+  mqtt_discovery("Pressure", "pressure", "hPa", "pressure", board_type) # Pressure
+  mqtt_discovery("Humidity", "humidity", "%", "humidity", board_type) # Humidity
+  mqtt_discovery("Voltage", "voltage", "V", "voltage", board_type) # Voltage
   if (board_type == "weather"):
-    mqtt_discovery("Enviro Luminance", "illuminance", "lx", "luminance", board_type) # Luminance
-    mqtt_discovery("Enviro Wind Speed", "wind_speed", "m/s", "wind_speed", board_type) # Wind Speed
-    mqtt_discovery("Enviro Rain", "precipitation", "mm", "rain", board_type) # Rain
-    mqtt_discovery("Enviro Rain Per Second", "precipitation_intensity", "mm/s", "rain_per_second", board_type) # Rain Per Second
-    #mqtt_discovery("Enviro Wind Direction", "", "°", "wind_direction", board_type) # Wind Direction //HASS doesn't have a device class for direction//
+    mqtt_discovery("Luminance", "illuminance", "lx", "luminance", board_type) # Luminance
+    mqtt_discovery("Wind Speed", "wind_speed", "m/s", "wind_speed", board_type) # Wind Speed
+    mqtt_discovery("Rain", "precipitation", "mm", "rain", board_type) # Rain
+    mqtt_discovery("Rain Per Second", "precipitation_intensity", "mm/s", "rain_per_second", board_type) # Rain Per Second
+    #mqtt_discovery("Wind Direction", "", "°", "wind_direction", board_type) # Wind Direction //HASS doesn't have a device class for direction//
   elif (board_type == "grow"):
-    mqtt_discovery("Enviro Luminance", "illuminance", "lx", "luminance", board_type) # Luminance
-    mqtt_discovery("Enviro Moisture A", "humidity", "%", "moisture_a", board_type) # Moisture A
-    mqtt_discovery("Enviro Moisture B", "humidity", "%", "moisture_b", board_type) # Moisture B
-    mqtt_discovery("Enviro Moisture C", "humidity", "%", "moisture_c", board_type) # Moisture C
+    mqtt_discovery("Luminance", "illuminance", "lx", "luminance", board_type) # Luminance
+    mqtt_discovery("Moisture A", "humidity", "%", "moisture_a", board_type) # Moisture A
+    mqtt_discovery("Moisture B", "humidity", "%", "moisture_b", board_type) # Moisture B
+    mqtt_discovery("Moisture C", "humidity", "%", "moisture_c", board_type) # Moisture C
   elif (board_type == "indoor"):
-    mqtt_discovery("Enviro Luminance", "illuminance", "lx", "luminance", board_type) # Luminance
-    #mqtt_discovery("Enviro Gas Resistance", "", "Ω", "gas_resistance", board_type) # Gas Resistance //HASS doesn't support resistance as a device class//
-    mqtt_discovery("Enviro AQI", "aqi", "&", "aqi", board_type) # AQI
-    mqtt_discovery("Enviro Colour Temperature", "temperature", "K", "color_temperature", board_type) # Colo(u)r Temperature
+    mqtt_discovery("Luminance", "illuminance", "lx", "luminance", board_type) # Luminance
+    #mqtt_discovery("Gas Resistance", "", "Ω", "gas_resistance", board_type) # Gas Resistance //HASS doesn't support resistance as a device class//
+    mqtt_discovery("AQI", "aqi", "&", "aqi", board_type) # AQI
+    mqtt_discovery("Colour Temperature", "temperature", "K", "color_temperature", board_type) # Colo(u)r Temperature
   elif (board_type == "urban"):
-    mqtt_discovery("Enviro Noise", "voltage", "V", "noise", board_type) # Noise
-    mqtt_discovery("Enviro PM1", "pm1", "µg/m³", "pm1", board_type) # PM1
-    mqtt_discovery("Enviro PM2.5", "pm25", "µg/m³", "pm2_5", board_type) # PM2_5
-    mqtt_discovery("Enviro PM10", "pm10", "µg/m³", "pm10", board_type) # PM10
+    mqtt_discovery("Noise", "voltage", "V", "noise", board_type) # Noise
+    mqtt_discovery("PM1", "pm1", "µg/m³", "pm1", board_type) # PM1
+    mqtt_discovery("PM2.5", "pm25", "µg/m³", "pm2_5", board_type) # PM2_5
+    mqtt_discovery("PM10", "pm10", "µg/m³", "pm10", board_type) # PM10
   
 
 def mqtt_discovery(name, device_class, unit, value_name, model):
