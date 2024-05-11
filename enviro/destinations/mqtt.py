@@ -61,7 +61,7 @@ def hass_discovery(board_type):
     mqtt_discovery("Enviro Luminance", "illuminance", "lx", "luminance", board_type) # Luminance
     mqtt_discovery("Enviro Wind Speed", "wind_speed", "m/s", "wind_speed", board_type) # Wind Speed
     mqtt_discovery("Enviro Rain", "precipitation", "mm", "rain", board_type) # Rain
-    mqtt_discovery("Enviro Rain Per Second", "precipitation", "mm/s", "rain_per_second", board_type) # Rain Per Second
+    mqtt_discovery("Enviro Rain Per Second", "precipitation_intensity", "mm/s", "rain_per_second", board_type) # Rain Per Second
     #mqtt_discovery("Enviro Wind Direction", "", "°", "wind_direction", board_type) # Wind Direction //HASS doesn't have a device class for direction//
   elif (board_type == "grow"):
     mqtt_discovery("Enviro Luminance", "illuminance", "lx", "luminance", board_type) # Luminance
