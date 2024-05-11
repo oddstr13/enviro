@@ -100,6 +100,8 @@ def mqtt_discovery(name, device_class, unit, value_name, model, icon=None):
     "stat_t":"enviro/" + nickname,
     "name":name,
     "uniq_id":"sensor." + nickname + "." + value_name,
+    "force_update":True,
+    "expire_after":config.reading_frequency * config.upload_frequency * 60 * 3,
   })
   if icon is not None:
     obj["icon"] = icon
