@@ -91,7 +91,7 @@ def check_trigger():
 
   last_rain_trigger = rain_sensor_trigger
 
-def wind_speed(sample_time_ms=1000):
+def wind_speed(sample_time_ms=3000):
   # get initial sensor state
   state = wind_speed_pin.value()
 
