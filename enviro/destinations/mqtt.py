@@ -26,7 +26,7 @@ def upload_reading(reading):
       mqtt_client = MQTTClient(reading["uid"], server, user=username, password=password, keepalive=60)
     # Now continue with connection and upload
     mqtt_client.connect()
-    mqtt_client.publish(f"enviro/{nickname}", ujson.dumps(reading), retain=True)
+    mqtt_client.publish(f"enviro/{nickname}", ujson.dumps(reading).encode("uft-8"), retain=True)
     mqtt_client.disconnect()
     return UPLOAD_SUCCESS
 
@@ -111,7 +111,7 @@ def mqtt_discovery(name, device_class, unit, value_name, model, icon=None):
     # attempt to publish reading
     mqtt_client = MQTTClient(nickname, server, user=username, password=password, keepalive=60)
     mqtt_client.connect()
-    mqtt_client.publish(f"homeassistant/sensor/{nickname}/{value_name}/config", ujson.dumps(obj), retain=True)
+    mqtt_client.publish(f"homeassistant/sensor/{nickname}/{value_name}/config", ujson.dumps(obj).encode("utf-8"), retain=True, qos=1)
     mqtt_client.disconnect()
     return UPLOAD_SUCCESS
   except:
