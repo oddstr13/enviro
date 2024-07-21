@@ -4,6 +4,7 @@ from enviro.constants import *
 from machine import Pin
 hold_vsys_en_pin = Pin(HOLD_VSYS_EN_PIN, Pin.OUT, value=True)
 
+import time
 # detect board model based on devices on the i2c bus and pin state
 # ===========================================================================
 from pimoroni_i2c import PimoroniI2C
@@ -105,23 +106,34 @@ config_defaults.add_missing_config_settings()
 # read the state of vbus to know if we were woken up by USB
 vbus_present = Pin("WL_GPIO2", Pin.IN).value()
 
-#BUG Temporarily disabling battery reading, as it seems to cause issues when connected to Thonny
-"""
 # read battery voltage - we have to toggle the wifi chip select
 # pin to take the reading - this is probably not ideal but doesn't
 # seem to cause issues. there is no obvious way to shut down the
 # wifi for a while properly to do this (wlan.disonnect() and
 # wlan.active(False) both seem to mess things up big style..)
-old_state = Pin(WIFI_CS_PIN).value()
-Pin(WIFI_CS_PIN, Pin.OUT, value=True)
-sample_count = 10
-battery_voltage = 0
-for i in range(0, sample_count):
-  battery_voltage += (ADC(29).read_u16() * 3.3 / 65535) * 3
-battery_voltage /= sample_count
-battery_voltage = round(battery_voltage, 3)
-Pin(WIFI_CS_PIN).value(old_state)
-"""
+# BUG Disabling battery reading while USB powered, as it seems to cause issues when connected to Thonny
+if not vbus_present:
+  old_state = Pin(WIFI_CS_PIN).value()
+  Pin(WIFI_CS_PIN, Pin.OUT, value=True)
+  ###
+  # Initialize ADC
+  # https://github.com/micropython/micropython/commit/2b8de7436bbdb54da99bf6bdb79359876fd3bc1d
+  ap = Pin(29)
+  a = ADC(ap)
+  ###
+
+  time.sleep(0.005) # Sleep for 5ms
+  a.read_u16() # Discard first reading
+  sample_count = 10
+  battery_voltage = 0
+  for i in range(0, sample_count):
+    battery_voltage += (a.read_u16() * 3.3 / 65535) * 3
+  battery_voltage /= sample_count
+  battery_voltage = round(battery_voltage, 3)
+
+  # Reset GPIO pins
+  Pin(WIFI_CS_PIN).value(old_state)
+  Pin(29, mode=Pin.ALT, pull=Pin.PULL_DOWN, alt=Pin.ALT_PIO1)
 
 # set up the button, external trigger, and rtc alarm pins
 rtc_alarm_pin = Pin(RTC_ALARM_PIN, Pin.IN, Pin.PULL_DOWN)
@@ -409,7 +421,8 @@ def get_sensor_readings():
 
 
   readings = get_board().get_sensor_readings(seconds_since_last, vbus_present)
-  # readings["voltage"] = 0.0 # battery_voltage #Temporarily removed until issue is fixed
+  if not vbus_present:
+    readings["voltage"] = battery_voltage
 
   # write out the last time log
   with open("last_time.txt", "w") as timefile:
